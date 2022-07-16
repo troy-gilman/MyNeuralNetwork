@@ -1,16 +1,18 @@
 #pragma once
 
+#include "Matrix.hpp"
 #include <vector>
 
 using namespace std;
 
 class LinearLayer {
     private:
-        unsigned int m_InChannnels, m_OutChannels;
-        vector<vector<float>> m_Params;
+        int m_InChannnels, m_OutChannels;
+        Matrix m_Params;
 
     public:
-        LinearLayer(unsigned int inChannels, unsigned int outChannels);
+        LinearLayer(int inChannels, int outChannels);
 
-        vector<float> forward(vector<float> x);
+        Matrix forward(Matrix x);
+        Matrix getParams();
 };
