@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Matrix {
+class Array {
     private:
         vector<float> m_Data;
         vector<int> m_Size;
@@ -14,14 +14,14 @@ class Matrix {
         
 
     public:
-        Matrix();
-        Matrix(vector<float> data);
-        Matrix(vector<int> size);
-        Matrix(vector<float> data, vector<int> size);
+        Array();
+        Array(vector<float> data);
+        Array(vector<int> size);
+        Array(vector<float> data, vector<int> size);
 
         float& at(vector<int> pos);
-        Matrix slice(int begin, int end);
-        void append(Matrix m);
+        Array slice(int begin, int end);
+        void append(Array m);
 
         vector<int> size();
         vector<float> data();

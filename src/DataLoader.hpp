@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Matrix.hpp"
+#include "Array.hpp"
 
 #include <vector>
 #include <string>
@@ -11,14 +11,14 @@ using namespace cv;
 
 class DataLoader {
     private:
-        Matrix m_Dataset;
+        Array m_Dataset;
         int m_BatchSize, m_BatchIdx;
 
     public:
-        DataLoader(Matrix dataset, unsigned int batchSize) : m_Dataset(dataset), m_BatchSize(batchSize), m_BatchIdx(0) {};
+        DataLoader(Array dataset, unsigned int batchSize) : m_Dataset(dataset), m_BatchSize(batchSize), m_BatchIdx(0) {};
 
-        Matrix next();
+        Array next();
 
-        static Matrix loadImages(string& path);
+        static Array loadImages(string& path);
 
 };

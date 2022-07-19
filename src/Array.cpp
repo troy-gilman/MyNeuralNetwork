@@ -1,25 +1,25 @@
-#include "Matrix.hpp"
+#include "Array.hpp"
 
 #include <stdexcept>
 using namespace std;
 
-Matrix::Matrix() {
+Array::Array() {
     m_Size = vector<int>{ 0 };
 }
 
-Matrix::Matrix(vector<float> data) : m_Data(data) {
+Array::Array(vector<float> data) : m_Data(data) {
     m_Size = vector<int>{ (int) data.size() };
 }
 
-Matrix::Matrix(vector<int> size) : m_Size(size) {
+Array::Array(vector<int> size) : m_Size(size) {
     int totalItems = 1;
     for (auto& dimSize : size) totalItems *= dimSize;
     m_Data = vector<float>(totalItems, 0.0f);
 }
 
-Matrix::Matrix(vector<float> data, vector<int> size) : m_Data(data), m_Size(size) {}
+Array::Array(vector<float> data, vector<int> size) : m_Data(data), m_Size(size) {}
 
-int Matrix::getIdx(vector<int> pos) {
+int Array::getIdx(vector<int> pos) {
     if (pos.size() != m_Size.size())
         throw invalid_argument("Position does not have the correct number of dimensions");
     int idx = pos[pos.size()-1];
@@ -31,12 +31,12 @@ int Matrix::getIdx(vector<int> pos) {
     return idx;
 }
 
-float& Matrix::at(vector<int> pos) {
+float& Array::at(vector<int> pos) {
     int idx = getIdx(pos);
     return m_Data[idx];
 }
 
-Matrix Matrix::slice(int begin, int end) {
+Array Array::slice(int begin, int end) {
     vector<int> beginPos(m_Size.size(), 0);
     vector<int> endPos(m_Size.size(), 0);
     beginPos[0] = begin;
@@ -46,10 +46,10 @@ Matrix Matrix::slice(int begin, int end) {
     vector<float> newData(m_Data.begin() + beginIdx, m_Data.begin() + endIdx);
     vector<int> newSize(m_Size);
     newSize[0] = end - begin;
-    return Matrix(newData, newSize);
+    return Array(newData, newSize);
 }
 
-void Matrix::append(Matrix m) {
+void Array::append(Array m) {
     vector<float> newData = m.data();
     vector<int> newSize = m.size();
     if (!m_Size[0] && m.size()[0]) {
@@ -60,27 +60,27 @@ void Matrix::append(Matrix m) {
         m_Data.insert(m_Data.begin(), newData.begin(), newData.end());
         m_Size[0]++;
     } else {
-        throw invalid_argument("Input matrix was not appendible to this matrix");
+        throw invalid_argument("Input Array was not appendible to this Array");
     }
 }
 
-vector<int> Matrix::size() {
+vector<int> Array::size() {
     return m_Size;
 }
 
-vector<float> Matrix::data() {
+vector<float> Array::data() {
     return m_Data;
 }
 
-bool Matrix::empty() {
+bool Array::empty() {
     return m_Size[0] == 0;
 }
 
-string Matrix::toString() {
+string Array::toString() {
     vector<int> pos(m_Size.size(), 0);
     string str;
     int dimIdx = 0;
-    str += "Matrix([";
+    str += "Array([";
 
     while (true) {
         if (dimIdx == pos.size()-1) {
@@ -111,14 +111,14 @@ string Matrix::toString() {
     return str;
 }
 
-bool Matrix::unitTests() {
+bool Array::unitTests() {
     vector<float> nums = {
         0.1, 0.2, 
         0.3, 0.4, 
         0.5, 0.6,
         0.7, 0.8, 
     };
-    Matrix mat(nums, vector<int>{ 2, 2, 2 });
+    Array mat(nums, vector<int>{ 2, 2, 2 });
     printf("%s\n", mat.toString().c_str());
     return true;
 }
