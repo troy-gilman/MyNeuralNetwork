@@ -1,25 +1,25 @@
-#include "Array.hpp"
+#include "ArrayF.hpp"
 
 #include <stdexcept>
 using namespace std;
 
-Array::Array() {
+ArrayF::ArrayF() {
     m_Size = vector<int>{ 0 };
 }
 
-Array::Array(vector<float> data) : m_Data(data) {
+ArrayF::ArrayF(vector<float> data) : m_Data(data) {
     m_Size = vector<int>{ (int) data.size() };
 }
 
-Array::Array(vector<int> size) : m_Size(size) {
+ArrayF::ArrayF(vector<int> size) : m_Size(size) {
     int totalItems = 1;
     for (auto& dimSize : size) totalItems *= dimSize;
     m_Data = vector<float>(totalItems, 0.0f);
 }
 
-Array::Array(vector<float> data, vector<int> size) : m_Data(data), m_Size(size) {}
+ArrayF::ArrayF(vector<float> data, vector<int> size) : m_Data(data), m_Size(size) {}
 
-int Array::getIdx(vector<int> pos) {
+int ArrayF::getIdx(vector<int> pos) {
     if (pos.size() != m_Size.size())
         throw invalid_argument("Position does not have the correct number of dimensions");
     int idx = pos[pos.size()-1];
@@ -31,25 +31,12 @@ int Array::getIdx(vector<int> pos) {
     return idx;
 }
 
-float& Array::at(vector<int> pos) {
+float& ArrayF::at(vector<int> pos) {
     int idx = getIdx(pos);
     return m_Data[idx];
 }
 
-Array Array::slice(int begin, int end) {
-    vector<int> beginPos(m_Size.size(), 0);
-    vector<int> endPos(m_Size.size(), 0);
-    beginPos[0] = begin;
-    endPos[0] = end;
-    int beginIdx = getIdx(beginPos);
-    int endIdx = getIdx(endPos);
-    vector<float> newData(m_Data.begin() + beginIdx, m_Data.begin() + endIdx);
-    vector<int> newSize(m_Size);
-    newSize[0] = end - begin;
-    return Array(newData, newSize);
-}
-
-void Array::append(Array m) {
+void ArrayF::append(ArrayF m) {
     vector<float> newData = m.data();
     vector<int> newSize = m.size();
     if (!m_Size[0] && m.size()[0]) {
@@ -60,27 +47,40 @@ void Array::append(Array m) {
         m_Data.insert(m_Data.begin(), newData.begin(), newData.end());
         m_Size[0]++;
     } else {
-        throw invalid_argument("Input Array was not appendible to this Array");
+        throw invalid_argument("Input ArrayF was not appendible to this ArrayF");
     }
 }
 
-vector<int> Array::size() {
+const ArrayF ArrayF::slice(int begin, int end) {
+    vector<int> beginPos(m_Size.size(), 0);
+    vector<int> endPos(m_Size.size(), 0);
+    beginPos[0] = begin;
+    endPos[0] = end;
+    int beginIdx = getIdx(beginPos);
+    int endIdx = getIdx(endPos);
+    vector<float> newData(m_Data.begin() + beginIdx, m_Data.begin() + endIdx);
+    vector<int> newSize(m_Size);
+    newSize[0] = end - begin;
+    return ArrayF(newData, newSize);
+}
+
+const vector<int> ArrayF::size() {
     return m_Size;
 }
 
-vector<float> Array::data() {
+const vector<float> ArrayF::data() {
     return m_Data;
 }
 
-bool Array::empty() {
+const bool ArrayF::empty() {
     return m_Size[0] == 0;
 }
 
-string Array::toString() {
+const string ArrayF::toString() {
     vector<int> pos(m_Size.size(), 0);
     string str;
     int dimIdx = 0;
-    str += "Array([";
+    str += "ArrayF([";
 
     while (true) {
         if (dimIdx == pos.size()-1) {
@@ -111,14 +111,14 @@ string Array::toString() {
     return str;
 }
 
-bool Array::unitTests() {
+bool ArrayF::unitTests() {
     vector<float> nums = {
         0.1, 0.2, 
         0.3, 0.4, 
         0.5, 0.6,
         0.7, 0.8, 
     };
-    Array mat(nums, vector<int>{ 2, 2, 2 });
+    ArrayF mat(nums, vector<int>{ 2, 2, 2 });
     printf("%s\n", mat.toString().c_str());
     return true;
 }

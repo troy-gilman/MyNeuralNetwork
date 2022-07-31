@@ -15,8 +15,8 @@ using namespace std;
 
 int NUM_ANTS = 99;
 int NUM_DOODLES = 11;
-int GRID_ROWS = 100;
-int GRID_COLS = 100;
+int GRID_ROWS = 30;
+int GRID_COLS = 30;
 int ROUNDS = 1000;
 int SLEEP_TIME = 100;
 

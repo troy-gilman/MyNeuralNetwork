@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Array.hpp"
+#include "ArrayF.hpp"
 #include <vector>
 
 using namespace std;
@@ -8,11 +8,11 @@ using namespace std;
 class LinearLayer {
     private:
         int m_InChannnels, m_OutChannels;
-        Array m_Params;
+        ArrayF m_Params;
 
     public:
         LinearLayer(int inChannels, int outChannels);
 
-        Array forward(Array x);
-        Array getParams();
+        ArrayF forward(ArrayF x);
+        ArrayF getParams();
 };

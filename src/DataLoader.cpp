@@ -1,26 +1,26 @@
 #include "DataLoader.hpp"
-#include "Array.hpp"
+#include "ArrayF.hpp"
 
 #include <filesystem>
 #include <opencv2/highgui.hpp>
 
 namespace fs = std::filesystem;
 
-Array DataLoader::next() {
+ArrayF DataLoader::next() {
     int dataIdx = m_BatchIdx * m_BatchIdx;
     if (dataIdx >= m_Dataset.size()[0]) {
         m_BatchIdx = 0;
-        return Array();
+        return ArrayF();
     }
 
     int range[] = { dataIdx, min(dataIdx + m_BatchSize, m_Dataset.size()[0]) };
-    Array out = m_Dataset.slice(range[0], range[1]);
+    ArrayF out = m_Dataset.slice(range[0], range[1]);
     m_BatchIdx++;
     return out;
 }
 
-Array DataLoader::loadImages(string& path) {
-    Array dataset;
+ArrayF DataLoader::loadImages(string& path) {
+    ArrayF dataset;
     for (const auto& entry : fs::directory_iterator(path)) {
 
         Mat img = imread(entry.path());
@@ -38,8 +38,8 @@ Array DataLoader::loadImages(string& path) {
             img = img / 255.0f;
             vector<float> imgVector;
             imgVector.assign((float*) img.data, (float*) img.data + img.rows * img.cols * img.channels());
-            Array Array(imgVector);
-            dataset.append(Array);
+            ArrayF ArrayF(imgVector);
+            dataset.append(ArrayF);
             printf("Loaded %s from file\n", entry.path().c_str());
         } else {
             printf("Data is not continuous\n");
