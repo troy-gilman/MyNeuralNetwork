@@ -4,6 +4,8 @@
 
 using namespace std;
 
+static const string idChars = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
 class Random {
     public:
         static const void init();

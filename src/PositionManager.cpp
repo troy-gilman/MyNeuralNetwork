@@ -1,4 +1,5 @@
 #include "PositionManager.hpp"
+#include <iostream>
 
 PositionManager::PositionManager() {
     m_IdMap.clear();
@@ -10,7 +11,7 @@ void PositionManager::set(string id, unsigned int row, unsigned int col) {
 
     string pos = encodePos(row, col);
 
-    if (posExists(pos)) throw invalid_argument("Tried to set an ID at a taken position");
+    if (posExists(pos)) return;
 
     if (idExists(id)) m_PosMap.erase(m_IdMap[id]);
 
@@ -61,8 +62,10 @@ string PositionManager::encodePos(unsigned int row, unsigned int col) {
 
 pair<unsigned int, unsigned int> PositionManager::decodePos(string pos) {
     auto delimIt = pos.find(",");
-    unsigned int row = stoul(pos.substr(0, delimIt));
-    unsigned int col = stoul(pos.substr(0, delimIt));
+    string sRow = pos.substr(0, delimIt);
+    string sCol = pos.substr(delimIt+1, pos.length() - delimIt);
+    unsigned int row = stoul(sRow);
+    unsigned int col = stoul(sCol);
     return pair{ row, col };
 }
 

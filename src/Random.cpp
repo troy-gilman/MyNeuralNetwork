@@ -18,7 +18,7 @@ const int Random::randInteger(int min, int max) {
 const string Random::randId(unsigned int len) {
     string id;
     for (int i = 0; i < len; i++) {
-        id += randInteger(33, 127);
+        id += idChars[randInteger(0, idChars.length())];
     }
     return id;
 }

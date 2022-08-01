@@ -1,26 +1,33 @@
-#include "GameState.hpp"
+#include "GridState.hpp"
 #include "Random.hpp"
+#include <iostream>
 
-GameState::GameState(unsigned int rows, unsigned int cols, vector<string> organisms)
+GridState::GridState(unsigned int rows, unsigned int cols, vector<string> organisms)
 : m_Rows(rows), m_Cols(cols) {
     for (string& id : organisms) {
         addOrganism(id);
     }
+    //cout << m_Rows << " " << m_Cols << endl;
 }
 
-void GameState::addOrganism(string id) {
+void GridState::addOrganism(string id) {
     if (m_OrgPositions.idExists(id)) throw invalid_argument("An organsim with that id already exists");
     auto pos = getFreeTilePos();
     m_OrgPositions.set(id, pos.first, pos.second);
 }
 
-void GameState::moveOrganism(string id, unsigned int row, unsigned int col) {
+void GridState::moveOrganism(string id, unsigned int row, unsigned int col) {
     if (!m_OrgPositions.idExists(id)) throw invalid_argument("The specified organism id does not exist");
-    if (row >= m_Rows || col >= m_Cols) throw invalid_argument("Move position is outside of valid grid");
+    if (row >= m_Rows || col >= m_Cols) return;
     m_OrgPositions.set(id, row, col);
 }
 
-pair<int, int> GameState::getFreeTilePos() {
+pair<unsigned int, unsigned int> GridState::getOrganismPos(string id) {
+    if (!m_OrgPositions.idExists(id)) throw invalid_argument("The specified organism id does not exist");
+    return m_OrgPositions.getPosOf(id);
+}
+
+pair<int, int> GridState::getFreeTilePos() {
     int row, col;
     int counter = 0;
     do {

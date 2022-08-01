@@ -1,6 +1,11 @@
 #pragma once
 
-#include "GameState.hpp"
+#include "GridState.hpp"
+
+struct OrganismMove {
+    int horizontalMove, verticalMove;
+
+};
 
 class Organism {
     private:
@@ -9,5 +14,5 @@ class Organism {
     public:
         Organism() {}
 
-        int move() { return 0; }
+        OrganismMove move();
 };

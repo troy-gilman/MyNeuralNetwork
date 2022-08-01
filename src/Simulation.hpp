@@ -2,7 +2,7 @@
 
 #include <map>
 #include "Organism.hpp"
-#include "GameState.hpp"
+#include "GridState.hpp"
 
 using namespace std;
 
@@ -10,7 +10,7 @@ class Simulation {
     private:
         int m_StepsRemaining;
         map<string, Organism*> m_Organisms;
-        GameState m_State;
+        GridState m_Grid;
 
     public:
         Simulation(map<string, Organism*> organisms);
